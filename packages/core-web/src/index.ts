@@ -1,4 +1,3 @@
-export { FedimintWallet } from './FedimintWallet'
 export type {
   LightningGateway,
   RouteHint,
@@ -7,4 +6,5 @@ export type {
   PayType,
   LnPayState,
   CreateBolt11Response,
-} from './types/wallet'
+} from './types'
+export * from './wallet'

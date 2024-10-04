@@ -1,0 +1,1 @@
+export { FedimintWallet } from './FedimintWallet'

@@ -1,6 +1,5 @@
-import { test, expect } from 'vitest'
-import { TestFedimintWallet } from './test/TestFedimintWallet'
-import { beforeAll } from 'vitest'
+import { test, expect, beforeAll } from 'vitest'
+import { TestFedimintWallet } from '../test/TestFedimintWallet'
 
 let randomTestingId: string
 let wallet: TestFedimintWallet

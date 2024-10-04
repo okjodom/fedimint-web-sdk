@@ -1,4 +1,4 @@
-import { JSONValue } from '../types/wallet'
+import { JSONValue } from '../types'
 import { WorkerClient } from '../worker'
 
 export class RecoveryService {

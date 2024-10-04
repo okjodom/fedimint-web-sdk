@@ -1,12 +1,12 @@
-import { WorkerClient, WorkerMessageType } from './worker'
+import { WorkerClient, WorkerMessageType } from '../worker'
 import {
   BalanceService,
   MintService,
   LightningService,
   FederationService,
   RecoveryService,
-} from './services'
-import { logger, type LogLevel } from './utils/logger'
+} from '../services'
+import { logger, type LogLevel } from '../utils/logger'
 
 const DEFAULT_CLIENT_NAME = 'fm-default' as const
 

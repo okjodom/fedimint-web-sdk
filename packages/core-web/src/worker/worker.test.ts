@@ -1,5 +1,5 @@
 import { expect } from 'vitest'
-import { JSONObject } from '../types/wallet'
+import { JSONObject } from '../wallet/types'
 import { TESTING_INVITE } from '../test/TestingService'
 import { workerTest } from '../test/setupTests'
 import { WorkerMessageType } from './types'

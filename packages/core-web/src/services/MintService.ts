@@ -5,7 +5,7 @@ import {
   JSONValue,
   MintSpendNotesResponse,
   ReissueExternalNotesState,
-} from '../types/wallet'
+} from '../types'
 
 export class MintService {
   constructor(private client: WorkerClient) {}

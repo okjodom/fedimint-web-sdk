@@ -1,4 +1,4 @@
-import { FedimintWallet } from '../FedimintWallet'
+import { FedimintWallet } from '../wallet/FedimintWallet'
 import { WorkerClient } from '../worker/WorkerClient'
 import { TestingService } from './TestingService'
 

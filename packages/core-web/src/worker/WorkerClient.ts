@@ -4,7 +4,7 @@ import {
   ModuleKind,
   StreamError,
   StreamResult,
-} from '../types/wallet'
+} from '../types'
 import { logger } from '../utils/logger'
 import { WorkerMessageType } from './types'
 

@@ -8,7 +8,7 @@ import {
   LnPayState,
   LnReceiveState,
   OutgoingLightningPayment,
-} from '../types/wallet'
+} from '../types'
 
 export class LightningService {
   constructor(private client: WorkerClient) {}

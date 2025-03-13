@@ -1,13 +1,14 @@
 import { test, expect } from 'vitest'
 import { TestFedimintWallet } from '../test/TestFedimintWallet'
 import { beforeAll } from 'vitest'
+import { FedimintWalletEnv } from '../FedimintWallet'
 
 let randomTestingId: string
 let wallet: TestFedimintWallet
 
 beforeAll(async () => {
   randomTestingId = Math.random().toString(36).substring(2, 15)
-  wallet = new TestFedimintWallet()
+  wallet = new TestFedimintWallet(FedimintWalletEnv.Web)
   expect(wallet).toBeDefined()
   await expect(
     wallet.joinFederation(wallet.testing.TESTING_INVITE, randomTestingId),

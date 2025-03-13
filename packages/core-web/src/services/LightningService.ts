@@ -1,5 +1,5 @@
-import { WorkerClient } from '../worker'
 import type {
+  ClientInterface,
   CreateBolt11Response,
   GatewayInfo,
   JSONObject,
@@ -10,7 +10,7 @@ import type {
 } from '../types'
 
 export class LightningService {
-  constructor(private client: WorkerClient) {}
+  constructor(private client: ClientInterface) {}
 
   /** https://web.fedimint.org/core/FedimintWallet/LightningService/createInvoice#lightning-createinvoice */
   async createInvoice(

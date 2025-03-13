@@ -5,24 +5,24 @@ import type {
   StreamError,
   StreamResult,
   WorkerMessageType,
+  ClientInterface,
 } from '../types'
 import { logger } from '../utils/logger'
+import { SubscriptionManager } from '../utils/SubscriptionManager'
 
 // Handles communication with the wasm worker
-// TODO: Move rpc stream management to a separate "SubscriptionManager" class
-export class WorkerClient {
+export class WorkerClient implements ClientInterface {
   private worker: Worker
-  private requestCounter = 0
-  private requestCallbacks = new Map<number, (value: any) => void>()
   private initPromise: Promise<boolean> | undefined = undefined
 
-  constructor() {
+  constructor(private readonly subman: SubscriptionManager) {
     // Must create the URL inside the constructor for vite
     this.worker = new Worker(new URL('./worker.js', import.meta.url), {
       type: 'module',
     })
     this.worker.onmessage = this.handleWorkerMessage.bind(this)
     this.worker.onerror = this.handleWorkerError.bind(this)
+
     logger.info('WorkerClient instantiated')
     logger.debug('WorkerClient', this.worker)
   }
@@ -47,53 +47,27 @@ export class WorkerClient {
     const { type, requestId, ...data } = event.data
     if (type === 'log') {
       this.handleWorkerLogs(event.data)
+      return
     }
-    const streamCallback = this.requestCallbacks.get(requestId)
-    // TODO: Handle errors... maybe have another callbacks list for errors?
-    logger.debug('WorkerClient - handleWorkerMessage', event.data)
-    if (streamCallback) {
-      streamCallback(data) // {data: something} OR {error: something}
-    } else {
-      logger.warn(
-        'WorkerClient - handleWorkerMessage - received message with no callback',
-        requestId,
-        event.data,
-      )
-    }
-  }
 
-  // TODO: Handle errors... maybe have another callbacks list for errors?
-  // TODO: Handle timeouts
-  // TODO: Handle multiple errors
+    logger.debug('WorkerClient - handleWorkerMessage', event.data)
+    this.subman.handleResponse(requestId, data)
+  }
 
   sendSingleMessage<
     Response extends JSONValue = JSONValue,
     Payload extends JSONValue = JSONValue,
   >(type: WorkerMessageType, payload?: Payload) {
-    return new Promise<Response>((resolve, reject) => {
-      const requestId = ++this.requestCounter
-      logger.debug('WorkerClient - sendSingleMessage', requestId, type, payload)
-      this.requestCallbacks.set(
-        requestId,
-        (response: StreamResult<Response>) => {
-          this.requestCallbacks.delete(requestId)
-          logger.debug(
-            'WorkerClient - sendSingleMessage - response',
-            requestId,
-            response,
-          )
-          if (response.data) resolve(response.data)
-          else if (response.error) reject(response.error)
-          else
-            logger.warn(
-              'WorkerClient - sendSingleMessage - malformed response',
-              requestId,
-              response,
-            )
-        },
-      )
-      this.worker.postMessage({ type, payload, requestId })
-    })
+    const requestId = this.subman.getNextRequestId()
+    logger.debug('WorkerClient - sendSingleMessage', requestId, type, payload)
+
+    // Create promise before sending message
+    const responsePromise = this.subman.createSingleRequest<Response>(requestId)
+
+    // Send message to worker
+    this.worker.postMessage({ type, payload, requestId })
+
+    return responsePromise
   }
 
   /**
@@ -105,10 +79,6 @@ export class WorkerClient {
    * correctly, even if the unsubscribe function is called before the subscription
    * is fully established, by deferring the unsubscription attempt using `setTimeout`.
    *
-   * The function operates in a non-blocking manner, leveraging Promises to manage
-   * asynchronous operations and callbacks to handle responses.
-   *
-   *
    * @template Response - The expected type of the successful response.
    * @template Body - The type of the request body.
    * @param module - The module kind to interact with.
@@ -118,7 +88,6 @@ export class WorkerClient {
    * @param onError - Callback invoked with error information if an error occurs.
    * @param onEnd - Optional callback invoked when the stream ends.
    * @returns A function that can be called to cancel the subscription.
-   *
    */
   rpcStream<
     Response extends JSONValue = JSONValue,
@@ -131,10 +100,11 @@ export class WorkerClient {
     onError: (res: StreamError['error']) => void,
     onEnd: () => void = () => {},
   ): CancelFunction {
-    const requestId = ++this.requestCounter
+    const requestId = this.subman.getNextRequestId()
     logger.debug('WorkerClient - rpcStream', requestId, module, method, body)
-    let unsubscribe: (value: void) => void = () => {}
+
     let isSubscribed = false
+    let unsubscribe: (value: void) => void = () => {}
 
     const unsubscribePromise = new Promise<void>((resolve) => {
       unsubscribe = () => {
@@ -143,70 +113,33 @@ export class WorkerClient {
           resolve()
         } else {
           // If not yet subscribed, defer the unsubscribe attempt to the next event loop tick
-          // This ensures that subscription setup has time to complete
           setTimeout(() => unsubscribe(), 0)
         }
       }
     })
 
-    // Initiate the inner RPC stream setup asynchronously
-    this._rpcStreamInner(
-      requestId,
-      module,
-      method,
-      body,
-      onSuccess,
-      onError,
-      onEnd,
-      unsubscribePromise,
-    ).then(() => {
-      isSubscribed = true
-    })
+    // Register the callback
+    this.subman.createStreamRequest(requestId, onSuccess, onError, onEnd)
 
-    return unsubscribe
-  }
-
-  private async _rpcStreamInner<
-    Response extends JSONValue = JSONValue,
-    Body extends JSONValue = JSONValue,
-  >(
-    requestId: number,
-    module: ModuleKind,
-    method: string,
-    body: Body,
-    onSuccess: (res: Response) => void,
-    onError: (res: StreamError['error']) => void,
-    onEnd: () => void = () => {},
-    unsubscribePromise: Promise<void>,
-    // Unsubscribe function
-  ) {
-    // await this.openPromise
-    // if (!this.worker || !this._isOpen)
-    //   throw new Error('FedimintWallet is not open')
-
-    this.requestCallbacks.set(requestId, (response: StreamResult<Response>) => {
-      if (response.error !== undefined) {
-        onError(response.error)
-      } else if (response.data !== undefined) {
-        onSuccess(response.data)
-      } else if (response.end !== undefined) {
-        this.requestCallbacks.delete(requestId)
-        onEnd()
-      }
-    })
+    // Send the message to the worker
     this.worker.postMessage({
       type: 'rpc',
       payload: { module, method, body },
       requestId,
     })
 
+    isSubscribed = true
+
+    // Handle unsubscription
     unsubscribePromise.then(() => {
-      this.worker?.postMessage({
+      this.worker.postMessage({
         type: 'unsubscribe',
         requestId,
       })
-      this.requestCallbacks.delete(requestId)
+      this.subman.removeCallback(requestId)
     })
+
+    return unsubscribe
   }
 
   rpcSingle<
@@ -221,16 +154,7 @@ export class WorkerClient {
 
   async cleanup() {
     await this.sendSingleMessage('cleanup')
-    this.requestCounter = 0
     this.initPromise = undefined
-    this.requestCallbacks.clear()
-  }
-
-  // For Testing
-  _getRequestCounter() {
-    return this.requestCounter
-  }
-  _getRequestCallbackMap() {
-    return this.requestCallbacks
+    this.subman.clear()
   }
 }

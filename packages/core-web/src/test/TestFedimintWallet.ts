@@ -1,12 +1,12 @@
-import { FedimintWallet } from '../FedimintWallet'
-import { WorkerClient } from '../worker/WorkerClient'
+import { FedimintWallet, FedimintWalletEnv } from '../FedimintWallet'
+import { SubscriptionManager } from '../utils/SubscriptionManager'
 import { TestingService } from './TestingService'
 
 export class TestFedimintWallet extends FedimintWallet {
   public testing: TestingService
 
-  constructor() {
-    super()
+  constructor(env: FedimintWalletEnv) {
+    super(env)
     this.testing = new TestingService(this.getWorkerClient(), this.lightning)
   }
 
@@ -20,7 +20,7 @@ export class TestFedimintWallet extends FedimintWallet {
   }
 
   // Method to expose the WorkerClient
-  getWorkerClient(): WorkerClient {
-    return this['_client']
+  getWorkerClient(): SubscriptionManager {
+    return this['_subman']
   }
 }

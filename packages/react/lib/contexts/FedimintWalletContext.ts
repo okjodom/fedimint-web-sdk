@@ -1,4 +1,4 @@
-import { FedimintWallet } from '@fedimint/core-web'
+import { FedimintWallet, FedimintWalletEnv } from '@fedimint/core-web'
 import {
   createContext,
   createElement,
@@ -17,7 +17,7 @@ type FedimintWalletConfig = {
 export type WalletStatus = 'open' | 'closed' | 'opening'
 
 export const setupFedimintWallet = (config: FedimintWalletConfig) => {
-  wallet = new FedimintWallet(!!config.lazy)
+  wallet = new FedimintWallet(FedimintWalletEnv.Web, !!config.lazy)
   if (config.debug) {
     wallet.setLogLevel('debug')
   }

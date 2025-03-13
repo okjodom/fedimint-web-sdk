@@ -7,11 +7,20 @@ import {
   RecoveryService,
 } from './services'
 import { logger, type LogLevel } from './utils/logger'
+import { NodeClient } from './NodeClient'
+import { ClientInterface } from './types'
+import { SubscriptionManager } from './utils/SubscriptionManager'
 
 const DEFAULT_CLIENT_NAME = 'fm-default' as const
 
+export enum FedimintWalletEnv {
+  Web,
+  Server,
+}
+
 export class FedimintWallet {
-  private _client: WorkerClient
+  private _subman: SubscriptionManager
+  private _client: ClientInterface
 
   public balance: BalanceService
   public mint: MintService
@@ -52,11 +61,15 @@ export class FedimintWallet {
    * lazyWallet.initialize();
    * lazyWallet.open();
    */
-  constructor(lazy: boolean = false) {
+  constructor(env: FedimintWalletEnv, lazy: boolean = false) {
     this._openPromise = new Promise((resolve) => {
       this._resolveOpen = resolve
     })
-    this._client = new WorkerClient()
+    this._subman = new SubscriptionManager()
+    this._client =
+      env === FedimintWalletEnv.Web
+        ? new WorkerClient(this._subman)
+        : new NodeClient(this._subman)
     this.mint = new MintService(this._client)
     this.lightning = new LightningService(this._client)
     this.balance = new BalanceService(this._client)

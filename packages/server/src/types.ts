@@ -1,13 +1,25 @@
-export * from './wallet'
-export * from './utils'
-export * from './worker'
+import type {
+  JSONValue,
+  WorkerMessageType,
+  StreamError,
+} from '@fedimint/core-web'
 
-import { JSONValue } from './utils'
-import { ModuleKind, StreamError, StreamEnd, CancelFunction } from './wallet'
-import { WorkerMessageType } from './worker'
+// Server-specific extension of the ModuleKind type to include additional modules
+export const MODULE_KINDS = [
+  '',
+  'ln',
+  'mint',
+  'lightning',
+  'federation',
+  'admin',
+] as const
+export type ModuleKind = (typeof MODULE_KINDS)[number]
 
-// Interface for both NodeClient and WorkerClient
-export interface ClientInterface {
+// Type for cancel function
+export type CancelFunction = () => void
+
+// Server-specific ClientInterface that uses our extended ModuleKind
+export interface ServerClientInterface {
   initialize(): Promise<boolean>
   sendSingleMessage<
     Response extends JSONValue = JSONValue,
@@ -36,14 +48,4 @@ export interface ClientInterface {
     body: JSONValue,
   ): Promise<Response>
   cleanup(): Promise<void>
-}
-
-// Re-export for internal use
-export {
-  JSONValue,
-  ModuleKind,
-  StreamError,
-  StreamEnd,
-  CancelFunction,
-  WorkerMessageType,
 }

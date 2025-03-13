@@ -105,6 +105,7 @@ export {
   GatewayInfo,
   StreamError,
   StreamSuccess,
+  StreamEnd,
   StreamResult,
   ModuleKind,
   CancelFunction,

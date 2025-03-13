@@ -1,4 +1,4 @@
-import { WorkerClient } from '../worker'
+import { ClientInterface } from '../types'
 
 /**
  * Balance Service
@@ -6,7 +6,7 @@ import { WorkerClient } from '../worker'
  * The Balance Service provides methods to interact with the balance of a Fedimint wallet.
  */
 export class BalanceService {
-  constructor(private client: WorkerClient) {}
+  constructor(private client: ClientInterface) {}
 
   /** https://web.fedimint.org/core/FedimintWallet/BalanceService/getBalance */
   async getBalance() {

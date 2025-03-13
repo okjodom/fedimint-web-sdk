@@ -1,6 +1,8 @@
 import { expect, test } from 'vitest'
 import { TestFedimintWallet } from './TestFedimintWallet'
 import { WorkerClient } from '../worker/WorkerClient'
+import { FedimintWalletEnv } from '../FedimintWallet'
+import { SubscriptionManager } from '../utils/SubscriptionManager'
 
 /**
  * Adds Fixtures for setting up and tearing down a test FedimintWallet instance
@@ -11,7 +13,7 @@ export const walletTest = test.extend<{
 }>({
   wallet: async ({}, use) => {
     const randomTestingId = Math.random().toString(36).substring(2, 15)
-    const wallet = new TestFedimintWallet()
+    const wallet = new TestFedimintWallet(FedimintWalletEnv.Web)
     expect(wallet).toBeDefined()
     const inviteCode = await wallet.testing.getInviteCode()
     await expect(
@@ -58,7 +60,8 @@ export const workerTest = test.extend<{
     await use(randomTestingId)
   },
   workerClient: async ({}, use) => {
-    const workerClient = new WorkerClient()
+    const subman = new SubscriptionManager()
+    const workerClient = new WorkerClient(subman)
     await use(workerClient)
   },
 })

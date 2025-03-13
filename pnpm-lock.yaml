@@ -84,6 +84,12 @@ importers:
         specifier: ^14.1.1
         version: 14.1.1
 
+  examples/node-example:
+    dependencies:
+      '@fedimint/core-web':
+        specifier: ^0.0.10
+        version: 0.0.10
+
   examples/vite-core:
     dependencies:
       '@fedimint/core-web':

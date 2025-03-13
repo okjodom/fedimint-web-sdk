@@ -1,5 +1,5 @@
 import { LightningService } from '../services'
-import { WorkerClient } from '../worker'
+import { SubscriptionManager } from '../utils/SubscriptionManager'
 
 export const TESTING_INVITE =
   'fed11qgqrsdnhwden5te0v9cxjtt4dekxzamxw4kz6mmjvvkhydted9ukg6r9xfsnx7th0fhn26tf093juamwv4u8gtnpwpcz7qqpyz0e327ua8geceutfrcaezwt22mk6s2rdy09kg72jrcmncng2gn0kp2m5sk'
@@ -9,19 +9,20 @@ export const TESTING_INVITE =
 export class TestingService {
   public TESTING_INVITE: string
   constructor(
-    private client: WorkerClient,
+    private subman: SubscriptionManager,
     private lightning: LightningService,
   ) {
     // Solo Mint on mutinynet
     this.TESTING_INVITE = TESTING_INVITE
   }
 
+  // subscriptionManager = new SubscriptionManager()
   getRequestCounter() {
-    return this.client._getRequestCounter()
+    return this.subman._getRequestCounter()
   }
 
   getRequestCallbackMap() {
-    return this.client._getRequestCallbackMap()
+    return this.subman._getRequestCallbackMap()
   }
 
   async getInviteCode() {

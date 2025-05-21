@@ -33,4 +33,14 @@ export default defineWorkspace([
       testTimeout: 20000,
     },
   },
+  {
+    plugins: [wasm()],
+    test: {
+      name: 'server',
+      environment: 'node',
+      include: ['packages/server/**/*.test.ts'],
+      isolate: true,
+      testTimeout: 10000,
+    },
+  },
 ])

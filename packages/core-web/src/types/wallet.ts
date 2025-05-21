@@ -67,7 +67,7 @@ type StreamSuccess<T extends JSONValue> = {
   end: never
 }
 
-type StreamEnd = {
+export type StreamEnd = {
   end: string
   data: never
   error: never

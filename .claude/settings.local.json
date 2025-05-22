@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install -g pnpm && pnpm install)",
+      "Bash(pnpm exec:*)",
+      "Bash(pnpm install)",
+      "Bash(pnpm run test:lib:*)",
+      "Bash(pnpm test)",
+      "Bash(pnpm typecheck)",
+      "Bash(ls:*)",
+      "Bash(npm ls:*)",
+      "Bash(pnpm build:*)",
+      "Bash(pnpm basic:*)",
+      "Bash(pnpm install:*)",
+      "Bash(pnpm run:*)",
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(cat:*)",
+      "Bash(mkdir:*)",
+      "Bash(bun run:*)",
+      "Bash(cp:*)",
+      "Bash(node test.js)",
+      "Bash(bun:*)"
+    ],
+    "deny": []
+  }
+}

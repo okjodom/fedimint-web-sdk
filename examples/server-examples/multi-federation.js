@@ -1,4 +1,4 @@
-import { FedimintWallet } from '@okjodom/fm-server'
+import { CustomFedimintWallet } from './patches/custom-wallet.js'
 import { LevelDBStorage } from '@okjodom/fm-server/storage'
 import { fileURLToPath } from 'url'
 import path from 'path'
@@ -21,7 +21,7 @@ class MultiFederationManager {
     const clientDataDir = path.join(this.baseDataDir, clientName)
     const storage = new LevelDBStorage(clientDataDir)
 
-    const wallet = new FedimintWallet({
+    const wallet = new CustomFedimintWallet({
       storageAdapter: storage,
       logLevel: 'info',
     })

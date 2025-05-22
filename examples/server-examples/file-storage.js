@@ -1,4 +1,4 @@
-import { FedimintWallet } from '@okjodom/fm-server'
+import { CustomFedimintWallet } from './patches/custom-wallet.js'
 import { FileStorage } from '@okjodom/fm-server/storage'
 import { fileURLToPath } from 'url'
 import path from 'path'
@@ -13,7 +13,7 @@ async function main() {
   )
 
   // Initialize the wallet with Node.js environment and file storage
-  const wallet = new FedimintWallet({
+  const wallet = new CustomFedimintWallet({
     storageAdapter: storage,
     logLevel: 'debug',
   })

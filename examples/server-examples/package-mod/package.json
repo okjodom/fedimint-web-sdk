@@ -1,0 +1,32 @@
+{
+  "name": "@fedimint/fedimint-client-wasm-bundler-enhanced",
+  "version": "0.1.0",
+  "description": "Enhanced WASM bundler for Fedimint client with improved Bun and Node.js support",
+  "type": "module",
+  "main": "src/index.js",
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "fedimint",
+    "wasm",
+    "bun",
+    "node"
+  ],
+  "author": "Fedimint Contributors",
+  "license": "MIT",
+  "dependencies": {
+    "@fedimint/fedimint-client-wasm-bundler": "0.0.3"
+  },
+  "peerDependencies": {
+    "@fedimint/fedimint-client-wasm-bundler": "0.0.3"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "bun": ">=1.0.0"
+  }
+}

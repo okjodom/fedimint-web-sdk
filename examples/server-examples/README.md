@@ -2,6 +2,42 @@
 
 This directory contains examples for using the Fedimint Server SDK in different Node.js/Bun server environments.
 
+## Running with Bun
+
+When running these examples with Bun, you might encounter the following error:
+
+```
+Failed to open client: malloc is not a function. (In 'malloc(buf.length, 1)', 'malloc' is undefined)
+```
+
+This happens because the WASM initialization process is different in Bun compared to Node.js.
+
+### Solution
+
+We've created a set of patched files that fix this issue. To run the examples in Bun:
+
+1. First, set up the WASM files locally:
+
+```bash
+bun run fix-wasm.js
+```
+
+2. Then run the example through our fixed bootstrap script:
+
+```bash
+bun run run-fixed.js
+```
+
+### How it works
+
+The fix addresses several issues:
+
+1. **WASM Initialization**: The patch properly initializes the WASM module before using it, ensuring that `malloc` and other WASM functions are available.
+
+2. **Custom Wallet Implementation**: We created a custom wallet implementation that uses our patched NodeClient.
+
+3. **Memory Polyfills**: For some Bun environments, we added memory-related polyfills.
+
 ## Basic Examples
 
 ### ESM (ES Modules)

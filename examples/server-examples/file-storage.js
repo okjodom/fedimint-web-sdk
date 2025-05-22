@@ -1,5 +1,5 @@
-import { FedimintWallet } from '@fedimint/server'
-import { FileStorage } from '@fedimint/server/storage'
+import { FedimintWallet } from '@okjodom/fm-server'
+import { FileStorage } from '@okjodom/fm-server/storage'
 import { fileURLToPath } from 'url'
 import path from 'path'
 
@@ -8,7 +8,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 async function main() {
   // Create a File-based storage adapter
-  const storage = new FileStorage(path.join(__dirname, 'data-file'))
+  const storage = new FileStorage(
+    path.join(__dirname, '.fm_storage/file_storage_example'),
+  )
 
   // Initialize the wallet with Node.js environment and file storage
   const wallet = new FedimintWallet({

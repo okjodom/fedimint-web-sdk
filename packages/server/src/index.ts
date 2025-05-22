@@ -1,7 +1,7 @@
 // Main exports
-export { FedimintWallet } from './FedimintWallet'
-export { createClient, type ClientOptions } from './client'
-export { ModuleKind, ServerClientInterface, CancelFunction } from './types'
+export { FedimintWallet } from './FedimintWallet.js'
+export { createClient, type ClientOptions } from './client.js'
+export { ModuleKind, ServerClientInterface, CancelFunction } from './types.js'
 
 // Export all services
 export {
@@ -10,18 +10,18 @@ export {
   LightningService,
   FederationService,
   RecoveryService,
-} from './services/index'
+} from './services/index.js'
 
 // Export storage adapters
-export { StorageAdapter } from './storage/StorageAdapter'
-export { LevelDBStorage } from './storage/LevelDBStorage'
-export { FileStorage } from './storage/FileStorage'
+export { StorageAdapter } from './storage/StorageAdapter.js'
+export { LevelDBStorage } from './storage/LevelDBStorage.js'
+export { FileStorage } from './storage/FileStorage.js'
 
 // Export utilities
-export { SubscriptionManager } from './utils/SubscriptionManager'
+export { SubscriptionManager } from './utils/SubscriptionManager.js'
 
 // Export logger utility
-export { logger, type LogLevel } from '@fedimint/core-web'
+export { type LogLevel } from '@fedimint/core-web'
 
 // Export our own types
 export interface Amount {

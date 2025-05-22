@@ -1,9 +1,5 @@
-import {
-  logger,
-  JSONValue,
-  StreamError,
-  StreamResult,
-} from '@fedimint/core-web'
+import { JSONValue, StreamError, StreamResult } from '@fedimint/core-web'
+import { logger } from './logger.js'
 
 /**
  * Manages RPC stream subscriptions and callbacks

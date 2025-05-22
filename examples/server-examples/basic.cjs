@@ -1,10 +1,12 @@
-const { FedimintWallet } = require('@fedimint/server')
-const { LevelDBStorage } = require('@fedimint/server/storage')
+const { FedimintWallet } = require('@okjodom/fm-server')
+const { LevelDBStorage } = require('@okjodom/fm-server/storage')
 const path = require('path')
 
 async function main() {
   // Create a LevelDB storage adapter
-  const storage = new LevelDBStorage(path.join(__dirname, 'data-cjs'))
+  const storage = new LevelDBStorage(
+    path.join(__dirname, '.fm_storage/basic_cjs_example'),
+  )
 
   // Initialize the wallet with Node.js environment and LevelDB storage
   const wallet = new FedimintWallet({
@@ -22,7 +24,7 @@ async function main() {
     // await wallet.joinFederation('your-invite-code', 'client-name');
 
     // Open the wallet
-    const isOpen = await wallet.open('my-client')
+    const isOpen = await wallet.open('basic-client')
     console.log('Wallet open:', isOpen)
 
     if (isOpen) {

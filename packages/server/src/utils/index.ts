@@ -1,1 +1,2 @@
-export * from './SubscriptionManager'
+export * from './SubscriptionManager.js'
+export * from './logger.js'

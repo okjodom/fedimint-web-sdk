@@ -1,5 +1,5 @@
-import { FedimintWallet } from '@fedimint/server'
-import { LevelDBStorage } from '@fedimint/server/storage'
+import { FedimintWallet } from '@okjodom/fm-server'
+import { LevelDBStorage } from '@okjodom/fm-server/storage'
 import { fileURLToPath } from 'url'
 import path from 'path'
 
@@ -66,14 +66,16 @@ class MultiFederationManager {
 async function main() {
   // Create a federation manager for handling multiple clients
   const federationManager = new MultiFederationManager(
-    path.join(__dirname, 'multi-federation-data'),
+    path.join(__dirname, '.fm_storage/multi_federation_example'),
   )
 
   try {
     // Create and open client 1
     console.log('Creating client 1...')
-    const client1 = await federationManager.createClient('federation-client-1')
-    let isOpen = await client1.open('federation-client-1')
+    const client1 = await federationManager.createClient(
+      'multi-federation-client-1',
+    )
+    let isOpen = await client1.open('multi-federation-client-1')
     console.log('Client 1 open:', isOpen)
 
     if (isOpen) {
@@ -91,8 +93,10 @@ async function main() {
 
     // Create and open client 2
     console.log('\nCreating client 2...')
-    const client2 = await federationManager.createClient('federation-client-2')
-    isOpen = await client2.open('federation-client-2')
+    const client2 = await federationManager.createClient(
+      'multi-federation-client-2',
+    )
+    isOpen = await client2.open('multi-federation-client-2')
     console.log('Client 2 open:', isOpen)
 
     if (isOpen) {
@@ -110,7 +114,7 @@ async function main() {
 
     // Close specific client
     console.log('\nClosing client 1...')
-    await federationManager.closeClient('federation-client-1')
+    await federationManager.closeClient('multi-federation-client-1')
     console.log('Client 1 closed')
 
     // Close all remaining clients

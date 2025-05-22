@@ -1,3 +1,3 @@
-export * from './StorageAdapter'
-export * from './LevelDBStorage'
-export * from './FileStorage'
+export * from './StorageAdapter.js'
+export * from './LevelDBStorage.js'
+export * from './FileStorage.js'

@@ -1,5 +1,5 @@
-import { FedimintWallet } from '@fedimint/server'
-import { LevelDBStorage } from '@fedimint/server/storage'
+import { FedimintWallet } from '@okjodom/fm-server'
+import { LevelDBStorage } from '@okjodom/fm-server/storage'
 import { fileURLToPath } from 'url'
 import express from 'express'
 import path from 'path'
@@ -8,7 +8,9 @@ import path from 'path'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 // Create a LevelDB storage adapter
-const storage = new LevelDBStorage(path.join(__dirname, 'data-server'))
+const storage = new LevelDBStorage(
+  path.join(__dirname, '.fm_storage/express_server_example'),
+)
 
 // Initialize the wallet with Node.js environment and LevelDB storage
 const wallet = new FedimintWallet({
@@ -27,7 +29,7 @@ async function initializeWallet() {
 
   // Open or join a federation
   try {
-    const isOpen = await wallet.open('my-server-client')
+    const isOpen = await wallet.open('express-server-client')
     console.log('Wallet open:', isOpen)
 
     if (!isOpen) {

@@ -1,5 +1,5 @@
 import { ClassicLevel } from 'classic-level'
-import { StorageAdapter, Transaction } from './StorageAdapter'
+import { StorageAdapter, Transaction } from './StorageAdapter.js'
 
 /**
  * LevelDB transaction implementation.

@@ -1,7 +1,7 @@
 {
-  "name": "@fedimint/server",
+  "name": "@okjodom/fm-server",
   "description": "Library for building server-side or CLI apps with a Fedimint client. Good for Node, Bun and similar runtimes",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "repository": {
     "type": "git",
     "url": "https://github.com/fedimint/fedimint-web-sdk.git",

@@ -1,6 +1,6 @@
 import path from 'path'
 import fs from 'fs/promises'
-import { StorageAdapter, Transaction } from './StorageAdapter'
+import { StorageAdapter, Transaction } from './StorageAdapter.js'
 
 /**
  * File-based transaction implementation.

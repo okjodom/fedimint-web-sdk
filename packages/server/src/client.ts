@@ -1,6 +1,6 @@
-import { StorageAdapter } from './storage'
-import { SubscriptionManager } from './utils'
-import { ServerClientInterface } from './types'
+import { StorageAdapter } from './storage/index.js'
+import { SubscriptionManager } from './utils/index.js'
+import { ServerClientInterface } from './types.js'
 
 // Define options type to be more specific
 export interface ClientOptions {
@@ -25,6 +25,6 @@ export const createClient = async (
   options: ClientOptions = {},
 ): Promise<ServerClientInterface> => {
   // For Node.js or Bun environment, import the NodeClient
-  const { NodeClient } = await import('./NodeClient')
+  const { NodeClient } = await import('./NodeClient.js')
   return new NodeClient(subman, options)
 }

@@ -1,4 +1,4 @@
-import { ServerClientInterface } from '../types'
+import { ServerClientInterface } from '../types.js'
 
 /**
  * Service for interacting with the federation's mint functionality.

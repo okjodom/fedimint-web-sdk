@@ -1,15 +1,15 @@
-import { logger, type LogLevel } from '@fedimint/core-web'
-import { ServerClientInterface } from './types'
-import { SubscriptionManager } from './utils'
-import { StorageAdapter } from './storage'
-import { createClient } from './client'
+import { type LogLevel } from '@fedimint/core-web'
+import { ServerClientInterface } from './types.js'
+import { logger, SubscriptionManager } from './utils/index.js'
+import { StorageAdapter } from './storage/index.js'
+import { createClient } from './client.js'
 import {
   BalanceService,
   MintService,
   LightningService,
   FederationService,
   RecoveryService,
-} from './services'
+} from './services/index.js'
 
 const DEFAULT_CLIENT_NAME = 'fm-default' as const
 

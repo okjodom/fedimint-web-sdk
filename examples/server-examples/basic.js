@@ -1,5 +1,5 @@
-import { FedimintWallet } from '@fedimint/server'
-import { LevelDBStorage } from '@fedimint/server/storage'
+import { FedimintWallet } from '@okjodom/fm-server'
+import { LevelDBStorage } from '@okjodom/fm-server/storage'
 import { fileURLToPath } from 'url'
 import path from 'path'
 
@@ -8,7 +8,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 async function main() {
   // Create a LevelDB storage adapter
-  const storage = new LevelDBStorage(path.join(__dirname, 'data'))
+  const storage = new LevelDBStorage(
+    path.join(__dirname, '.fm_storage/basic_js_example'),
+  )
 
   // Initialize the wallet with Node.js environment and LevelDB storage
   const wallet = new FedimintWallet({

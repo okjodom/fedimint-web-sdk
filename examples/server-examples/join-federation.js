@@ -1,5 +1,5 @@
-import { FedimintWallet } from '@fedimint/server'
-import { LevelDBStorage } from '@fedimint/server/storage'
+import { FedimintWallet } from '@okjodom/fm-server'
+import { LevelDBStorage } from '@okjodom/fm-server/storage'
 import { fileURLToPath } from 'url'
 import fs from 'fs/promises'
 import path from 'path'
@@ -8,7 +8,7 @@ import path from 'path'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 // Ensure the data directory exists
-const dataDir = path.join(__dirname, 'federation-data')
+const dataDir = path.join(__dirname, '.fm_storage/join_federation_example')
 
 async function main() {
   // Get invite code from command line arguments

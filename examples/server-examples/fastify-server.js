@@ -1,5 +1,5 @@
-import { FedimintWallet } from '@fedimint/server'
-import { LevelDBStorage } from '@fedimint/server/storage'
+import { FedimintWallet } from '@okjodom/fm-server'
+import { LevelDBStorage } from '@okjodom/fm-server/storage'
 import { fileURLToPath } from 'url'
 import Fastify from 'fastify'
 import path from 'path'
@@ -13,7 +13,9 @@ const server = Fastify({
 })
 
 // Create a LevelDB storage adapter
-const storage = new LevelDBStorage(path.join(__dirname, 'fastify-data'))
+const storage = new LevelDBStorage(
+  path.join(__dirname, '.fm_storage/fastify_server_example'),
+)
 
 // Initialize the wallet with Node.js environment and LevelDB storage
 const wallet = new FedimintWallet({

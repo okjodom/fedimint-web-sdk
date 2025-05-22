@@ -1,15 +1,20 @@
 import {
-  logger,
   JSONValue,
-  StreamEnd,
   StreamError,
   StreamSuccess,
   WorkerMessageType,
 } from '@fedimint/core-web'
 import { RpcHandle } from '@fedimint/fedimint-client-wasm-bundler'
-import { ModuleKind, CancelFunction, ServerClientInterface } from './types'
-import { SubscriptionManager } from './utils/SubscriptionManager'
-import { StorageAdapter } from './storage'
+import { ModuleKind, CancelFunction, ServerClientInterface } from './types.js'
+import { SubscriptionManager } from './utils/index.js'
+import { StorageAdapter } from './storage/index.js'
+import { logger } from './utils/index.js'
+
+type StreamEnd = {
+  end: string
+  data: never
+  error: never
+}
 
 /**
  * Enhanced NodeClient for server environments with pluggable storage.
